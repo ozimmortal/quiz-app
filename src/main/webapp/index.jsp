@@ -88,7 +88,7 @@
             <p class="subtitle is-4">
                 Create engaging quizzes in minutes and track your results instantly.
             </p>
-            <a href="#" class="button cta-button is-large">Get Started Now</a>
+            <a href="login.jsp" class="button cta-button is-large">Get Started Now</a>
         </div>
     </div>
 </section>
