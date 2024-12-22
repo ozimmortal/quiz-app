@@ -6,7 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Quiz Builder</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
     <style>
         :root {
             --background-color: #fff;
@@ -63,6 +69,9 @@
             cursor: pointer;
             color: var(--text-color);
         }
+        .label,.title{
+            color: var(--text-color);
+        }
     </style>
 </head>
 <body>
@@ -72,32 +81,32 @@
 
     <div class="card">
         <h1 class="title has-text-centered">Register</h1>
-        <form>
+        <form method="post" action="/register">
             <div class="field">
                 <label class="label">Full Name</label>
                 <div class="control">
-                    <input class="input" type="text" placeholder="Enter your full name" required>
+                    <input class="input" type="text" placeholder="Enter your full name" required name="name">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input class="input" type="email" placeholder="Enter your email" required>
+                    <input class="input" type="email" placeholder="Enter your email" required name="email">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Password</label>
                 <div class="control">
-                    <input class="input" type="password" placeholder="Enter your password" required>
+                    <input class="input" type="password" placeholder="Enter your password" required name="password">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Confirm Password</label>
                 <div class="control">
-                    <input class="input" type="password" placeholder="Confirm your password" required>
+                    <input class="input" type="password" placeholder="Confirm your password" required name="confirmPassword">
                 </div>
             </div>
 
@@ -112,7 +121,7 @@
     </div>
 
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
     <script>
         function toggleDarkMode() {
             const body = document.body;
