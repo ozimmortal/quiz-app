@@ -91,6 +91,7 @@
             <a href="login.jsp" class="button cta-button is-large">Get Started Now</a>
         </div>
     </div>
+
 </section>
 
 <script>

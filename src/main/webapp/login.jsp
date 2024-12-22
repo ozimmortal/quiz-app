@@ -82,7 +82,7 @@
 
     <div class="card">
         <h1 class="title has-text-centered">Login</h1>
-        <form>
+        <form method="post" action="login">
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
