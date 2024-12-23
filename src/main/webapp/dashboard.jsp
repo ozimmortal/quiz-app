@@ -94,6 +94,13 @@
                 border-radius: 50%;
             }
         }
+        .navbar-brand{
+            margin-left: 10px;
+            font-size: 2rem;
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
     </style>
 </head>
 <body>
@@ -117,7 +124,7 @@
 
 <nav class="navbar">
     <div class="navbar-brand">
-        <a class="navbar-item" href="#">Quiz App</a>
+       <h2 class="title">Quiz Builder</h2>
     </div>
     <div class="navbar-end">
         <div class="navbar-item">
