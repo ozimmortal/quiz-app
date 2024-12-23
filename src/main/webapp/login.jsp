@@ -1,5 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,16 +74,32 @@
         .label,.title{
             color: var(--text-color);
         }
+        .error-notification{
+            margin-top: 1rem;
+            margin-left: 50%;
+            margin-right: 50%;
+            position: absolute;
+            z-index:100;
+            top: 1.5rem;
+            padding: 1rem;
+            width: 270px;
+        }
     </style>
 </head>
 <body>
+    <c:if test="${param.error != null}">
+        <div class="notification is-danger error-notification">
+            <button class="delete"></button>
+            <p>Invalid username or password</p>
+        </div>
+    </c:if>
     <button class="dark-mode-toggle" onclick="toggleDarkMode()">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
 
     <div class="card">
         <h1 class="title has-text-centered">Login</h1>
-        <form method="post" action="login">
+        <form method="post" action="${pageContext.request.contextPath}/login">
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
@@ -121,6 +138,15 @@
             body.setAttribute('data-theme', newTheme);
             themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
     </script>
 </body>
 </html>

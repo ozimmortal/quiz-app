@@ -10,12 +10,34 @@ import  jakarta.servlet.http.HttpSession;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+    UserDao userDao;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        userDao = new UserDao();
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        String confirmPassword = req.getParameter("confirmPassword");
+
+        try{
+            HttpSession session = req.getSession();
+            if(userDao.registerUser(name, email, password)){
+
+                session.setAttribute("email", email);
+                resp.sendRedirect("dashboard.jsp");
+            }
+            else{
+                resp.sendRedirect("register.jsp?error=true");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println(email + " " + password);
     }

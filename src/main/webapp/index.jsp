@@ -75,6 +75,14 @@
     </style>
 </head>
 <body>
+<%
+
+    if (session.getAttribute("email") != null){
+        response.sendRedirect("dashboard.jsp");
+    }
+
+
+%>
 <button class="dark-mode-toggle" onclick="toggleDarkMode()">
         <span id="darkModeIcon" class="icon">
             <i class="fas fa-moon"></i>

@@ -81,7 +81,7 @@
 
     <div class="card">
         <h1 class="title has-text-centered">Register</h1>
-        <form method="post" action="/register">
+        <form method="post" action="${pageContext.request.contextPath}/register">
             <div class="field">
                 <label class="label">Full Name</label>
                 <div class="control">
