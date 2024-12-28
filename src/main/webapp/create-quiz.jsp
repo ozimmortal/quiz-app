@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="true" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="true" errorPage="error.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
