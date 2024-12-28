@@ -77,7 +77,7 @@
 <body>
 <%
 
-    if (session.getAttribute("email") != null){
+    if (session.getAttribute("id") != null){
         response.sendRedirect("dashboard.jsp");
     }
 

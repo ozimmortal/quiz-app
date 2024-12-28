@@ -1,5 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,9 +73,25 @@
         .label,.title{
             color: var(--text-color);
         }
+        .error-notification{
+            margin-top: 1rem;
+            margin-left: 50%;
+            margin-right: 50%;
+            position: absolute;
+            z-index:100;
+            top: 1.5rem;
+            padding: 1rem;
+            width: 270px;
+        }
     </style>
 </head>
 <body>
+<c:if test="${param.error != null}">
+    <div class="notification is-danger error-notification">
+        <button class="delete"></button>
+        <p>Invalid username or password</p>
+    </div>
+</c:if>
     <button class="dark-mode-toggle" onclick="toggleDarkMode()">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
@@ -115,7 +132,7 @@
             </div>
 
             <p class="has-text-centered">
-                <a href="#">Already have an account? Login here.</a>
+                Already have an account? <a href="login.jsp"> Login here.</a>
             </p>
         </form>
     </div>

@@ -23,10 +23,10 @@ public class LoginServlet extends HttpServlet {
 
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-
-        if (userDao.validateUser(email, password)) {
+        String id = userDao.validateUser(email, password);
+        if (!id.isEmpty()) {
             HttpSession session = req.getSession();
-            session.setAttribute("email", email);
+            session.setAttribute("id", id);
             resp.sendRedirect("dashboard.jsp");
         } else {
             resp.sendRedirect("login.jsp?error=true");

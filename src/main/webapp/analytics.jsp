@@ -1,16 +1,258 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: XPS
-  Date: 12/28/2024
-  Time: 7:02 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<%@ taglib prefix="sql" uri="jakarta.tags.sql" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Form Builder</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    >
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --background-color: #fff;
+            --text-color: #000;
+            --card-bg-color: #fff;
+            --cta-button-bg: #000;
+            --cta-button-text: #fff;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #000;
+            --text-color: #fff;
+            --card-bg-color: #212A37;
+            --cta-button-bg: #fff;
+            --cta-button-text: #000;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card {
+            background: var(--card-bg-color);
+            border: 1px solid var(--text-color);
+        }
+
+        .cta-button {
+            background: var(--cta-button-bg);
+            color: var(--cta-button-text);
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            opacity: 0.8;
+        }
+        .inner-form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            width: 50%;
+
+        }
+
+        @media (max-width: 768px) {
+            .inner-form{
+                width: 100%;
+            }
+        }
+
+        .analytics-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            color: var(--text-color);
+
+
+        }
+        .question-list{
+            width: 100%;
+        }
+        .centered{
+            text-align: center;
+        }
+        .question-item {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            color: red;
+        }
+        .nav-title{
+            display: flex;
+            width: 100%;
+            bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .label, .title {
+            color: var(--text-color);
+        }
+        .label{
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .delete-answer-group{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 10px;
+        }
+        .answer-ipt{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .radio{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .control{
+            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .card{
+            padding: 20px;
+            width: 100%;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+            border: none;
+            color: var(--text-color);
+        }
+        .fields{
+            width: 100%;
+
+
+        }
+        .count{
+            display: inline-block;
+            font-size: small;
+            margin-left: 10px;
+        }
+        .nav-title{
+            position: sticky;
+            z-index: 100;
+            top: 10px;
+
+        }
+        .nav-button{
+            display: flex;
+            gap: 10px;
+            align-items: center;;
+        }
+        .error-notification{
+            margin-top: 1rem;
+            margin-left: 50%;
+            margin-right: 50%;
+            position: absolute;
+            z-index:100;
+            top: 1.5rem;
+            padding: 1rem;
+            width: 270px;
+            display: none;
+        }
+        .table th, .table td {
+            color: var(--text-color); /* Applies the text color to headers and cells */
+        }
+
+
+    </style>
+</head>
+<body>
+<%
+    response.setHeader("Pragma", "no-cache");
+    response.setHeader("Expires", "0");
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    String ids = (String) session.getAttribute("id");
+    if (ids == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    String id = request.getParameter("userid");
+    String quiz_id = request.getParameter("quizid");
+    System.out.println(id + " " + quiz_id);
+
+%>
+
+<div class="notification is-danger error-notification">
+    <button class="delete"></button>
+    <p id="error-message"></p>
+</div>
+<section class="section">
+    <div class="container">
+        <div class="nav-title">
+            <h1 class="title">Quiz  Builder</h1>
+            <div class="nav-button">
+                <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+        <div class="analytics-container ">
+            <p>No Analytics</p>
+        </div>
+    </div>
+
+</section>
+<script src="render.js"></script>
+<script >
+    let data;
+    fetch(`http://localhost:8080/quiz_app_war_exploded/get-answer?qid=<%=quiz_id%>&id=<%=id%>`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then(res => res.json())
+        .then(json => {
+            data = json;
+            console.log(data); // Log the fetched data
+            renderAnalytics(data);
+
+        })
+        .catch(err => console.error("Error fetching quiz data:", err));
+
+
+
+
+    function toggleDarkMode() {
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? '' : 'dark';
+
+        body.setAttribute('data-theme', newTheme);
+        themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+
+</script>
+</body>
 </html>

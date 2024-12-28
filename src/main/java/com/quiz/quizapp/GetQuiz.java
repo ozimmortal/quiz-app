@@ -1,5 +1,6 @@
+package com.quiz.quizapp;
+
 import com.google.gson.JsonObject;
-import com.quiz.quizapp.UserDao;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.ServletException;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/get-quiz")
 public class GetQuiz extends HttpServlet {

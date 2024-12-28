@@ -27,16 +27,14 @@ public class RegisterServlet extends HttpServlet {
         try{
             HttpSession session = req.getSession();
             if(userDao.registerUser(name, email, password)){
-
-                session.setAttribute("email", email);
-                resp.sendRedirect("dashboard.jsp");
+                resp.sendRedirect("login.jsp");
             }
             else{
                 resp.sendRedirect("register.jsp?error=true");
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            resp.sendRedirect("register.jsp?error=true");
         }
 
         System.out.println(email + " " + password);

@@ -108,18 +108,19 @@
     response.setHeader("Pragma", "no-cache");
     response.setHeader("Expires", "0");
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    String email = (String) session.getAttribute("email");
-    if (email == null) {
+    String id = (String) session.getAttribute("id");
+    if (id == null) {
         response.sendRedirect("login.jsp");
         return;
     }
+
 %>
 <sql:setDataSource var="dataSource" driver="com.mysql.cj.jdbc.Driver"
                    url="jdbc:mysql://localhost:3306/quiz"
                    user="root" password="oliy2627" />
 <sql:query dataSource="${dataSource}" var="result">
-    SELECT * FROM user WHERE email = ?
-    <sql:param value="${email}" />
+    SELECT * FROM users WHERE id = ?
+    <sql:param value="${id}" />
 </sql:query>
 
 <nav class="navbar">
@@ -143,7 +144,7 @@
                     <span class="icon">
                         <i class="fas fa-user-circle"></i>
                     </span>
-                    ${result.rows[0].fullname}
+                    ${result.rows[0].name}
                 </a>
                 <a class="navbar-item" href="#about">
                     <span class="icon">
@@ -165,12 +166,35 @@
 <section class="section main-container">
     <div class="welcome-container">
         <h1 class="title">Dashboard</h1>
-        <button class="button is-dark create-btn">
+        <a href="create-quiz.jsp" class="button is-dark create-btn">
             <span class="btn-label">Create Quiz</span>
             <span class="icon">
                 <i class="fas fa-plus"></i>
             </span>
-        </button>
+        </a>
+    </div>
+    <div class="columns is-multiline is-variable is-4 content-container">
+        <sql:query dataSource="${dataSource}" var="result">
+            SELECT * FROM quizzes WHERE userid = ?
+            <sql:param value="${id}" />
+        </sql:query>
+
+        <c:forEach items="${result.rows}" var="quiz">
+            <div class="column is-4">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title is-4">${quiz.title}</p>
+                        <p class="subtitle is-6">${quiz.description}</p>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="${pageContext.request.contextPath}/quiz.jsp?userid=<%=id%>&quizid=${quiz.qid}"
+                           class="card-footer-item has-text-weight-bold">View Quiz</a>
+                        <a href="${pageContext.request.contextPath}/analytics.jsp?userid=<%=id%>&quizid=${quiz.qid}"
+                           class="card-footer-item has-text-weight-bold">View Analytics</a>
+                    </footer>
+                </div>
+            </div>
+        </c:forEach>
     </div>
 </section>
 
