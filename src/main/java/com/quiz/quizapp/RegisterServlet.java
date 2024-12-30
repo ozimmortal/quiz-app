@@ -23,6 +23,13 @@ public class RegisterServlet extends HttpServlet {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
+        \\ validation check
+        if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
+        resp.sendRedirect("register.jsp?error=empty-fields");
+        return;
+    }
+
+
 
         try{
             HttpSession session = req.getSession();
