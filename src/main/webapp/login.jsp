@@ -1,18 +1,12 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="error.jsp" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Quiz Builder</title>
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 
     <style>
         :root {
@@ -48,7 +42,6 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            color: var(--text-color);
         }
 
         .cta-button {
@@ -71,28 +64,21 @@
             cursor: pointer;
             color: var(--text-color);
         }
-        .label,.title{
+
+        .label, .title {
             color: var(--text-color);
         }
-        .error-notification{
-            margin-top: 1rem;
-            margin-left: 50%;
-            margin-right: 50%;
-            position: absolute;
-            z-index:100;
-            top: 1.5rem;
-            padding: 1rem;
-            width: 270px;
+
+        .field {
+            position: relative;
+        }
+
+        .help.is-danger {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <c:if test="${param.error != null}">
-        <div class="notification is-danger error-notification">
-            <button class="delete"></button>
-            <p>Invalid username or password</p>
-        </div>
-    </c:if>
     <button class="dark-mode-toggle" onclick="toggleDarkMode()">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
@@ -119,14 +105,10 @@
             </div>
 
             <p class="has-text-centered">
-                <p class="has-text-centered">
-                    Don't have an account? <a href="register.jsp">Register</a>
-                </p>
+                Don't have an account? <a href="register.jsp">Register</a>
             </p>
         </form>
-    
     </div>
-
 
     <script>
         function toggleDarkMode() {
@@ -138,6 +120,7 @@
             body.setAttribute('data-theme', newTheme);
             themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
+
         document.addEventListener('DOMContentLoaded', () => {
             (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
                 const $notification = $delete.parentNode;
@@ -146,6 +129,13 @@
                     $notification.parentNode.removeChild($notification);
                 });
             });
+
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                document.body.setAttribute('data-theme', storedTheme);
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.className = storedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
         });
     </script>
 </body>
