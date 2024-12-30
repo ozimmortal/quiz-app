@@ -1,18 +1,12 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="error.jsp" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Quiz Builder</title>
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 
     <style>
         :root {
@@ -70,35 +64,58 @@
             cursor: pointer;
             color: var(--text-color);
         }
-        .label,.title{
+
+        .label, .title {
             color: var(--text-color);
         }
-        .error-notification{
+
+        .error-notification {
             margin-top: 1rem;
             margin-left: 50%;
             margin-right: 50%;
-            position: absolute;
-            z-index:100;
-            top: 1.5rem;
+            position: relative;
+            z-index: 100;
+            top: 1rem;
             padding: 1rem;
             width: 270px;
+            background-color: #ff3860;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        input[type="password"], input[type="email"] {
+            width: calc(100% - 30px);
+        }
+
+        .toggle-password {
+            background: none;
+            border: none;
+            position: relative;
+            left: -30px;
+            cursor: pointer;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .help.is-danger {
+            color: red;
+        }
+
+        .help.is-success {
+            color: green;
         }
     </style>
 </head>
 <body>
-<c:if test="${param.error != null}">
-    <div class="notification is-danger error-notification">
-        <button class="delete"></button>
-        <p>Invalid username or password</p>
-    </div>
-</c:if>
     <button class="dark-mode-toggle" onclick="toggleDarkMode()">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
 
     <div class="card">
         <h1 class="title has-text-centered">Register</h1>
-        <form method="post" action="${pageContext.request.contextPath}/register">
+        <form id="registrationForm" method="post" action="${pageContext.request.contextPath}/register">
             <div class="field">
                 <label class="label">Full Name</label>
                 <div class="control">
@@ -109,22 +126,30 @@
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input class="input" type="email" placeholder="Enter your email" required name="email">
+                    <input class="input" type="email" placeholder="Enter your email" required name="email" id="email">
                 </div>
+                <p id="emailError" class="help is-danger" style="display:none;"></p>
             </div>
 
             <div class="field">
                 <label class="label">Password</label>
                 <div class="control">
-                    <input class="input" type="password" placeholder="Enter your password" required name="password">
+                    <input class="input" type="password" placeholder="Enter your password" required name="password" id="password">
+                    <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Confirm Password</label>
                 <div class="control">
-                    <input class="input" type="password" placeholder="Confirm your password" required name="confirmPassword">
+                    <input class="input" type="password" placeholder="Confirm your password" required name="confirmPassword" id="confirmPassword">
+                    <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
+                <p id="passwordError" class="help is-danger" style="display:none;"></p>
             </div>
 
             <div class="field">
@@ -135,11 +160,68 @@
                 Already have an account? <a href="login.jsp"> Login here.</a>
             </p>
         </form>
+
+        <c:if test="${param.error != null}">
+            <div class="notification is-danger error-notification" style="display: none;">
+                <p>Invalid username or password</p>
+            </div>
+        </c:if>
     </div>
 
-    <!-- Font Awesome Icons -->
-
     <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordError = document.getElementById('passwordError');
+            const email = document.getElementById('email').value;
+            const emailError = document.getElementById('emailError');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let valid = true;
+
+            if (password !== confirmPassword) {
+                passwordError.textContent = 'Passwords do not match';
+                passwordError.style.display = 'block';
+                valid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            if (!emailPattern.test(email)) {
+                emailError.textContent = 'Invalid email address';
+                emailError.style.display = 'block';
+                valid = false;
+            } else {
+                emailError.style.display = 'none';
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value;
+            const emailError = document.getElementById('emailError');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+                emailError.textContent = 'Invalid email address';
+                emailError.style.display = 'block';
+            } else {
+                emailError.style.display = 'none';
+            }
+        });
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const type = field.type === 'password' ? 'text' : 'password';
+            field.type = type;
+
+            const icon = field.nextElementSibling.querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        }
+
         function toggleDarkMode() {
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
@@ -148,7 +230,26 @@
 
             body.setAttribute('data-theme', newTheme);
             themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+            localStorage.setItem('theme', newTheme);
         }
+
+        window.addEventListener('load', () => {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                document.body.setAttribute('data-theme', storedTheme);
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.className = storedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        });
+
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                document.querySelector('.error-notification').style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
