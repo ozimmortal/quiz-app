@@ -36,7 +36,7 @@ https://github.com/user-attachments/assets/8b0bde4b-9793-4bef-9a3f-32e4d93b15d9
 ### Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/quiz-app-builder.git
+   git clone https://github.com/yourusername/quiz-app.git
    cd quiz-app
 
 
