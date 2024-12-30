@@ -25,6 +25,9 @@ These is  a undergraduate team project for my advanced java programming class
 
 ## Showcase
 
+https://github.com/user-attachments/assets/8b0bde4b-9793-4bef-9a3f-32e4d93b15d9
+
+
 ### Prerequisites
 1. **Java Development Kit (JDK)** installed.
 2. **Apache Tomcat Server** set up.
