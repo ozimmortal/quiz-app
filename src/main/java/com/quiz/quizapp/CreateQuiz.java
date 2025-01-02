@@ -26,6 +26,12 @@ public class CreateQuiz extends HttpServlet{
         String line;
         HttpSession session = req.getSession();
         String userid = session.getAttribute("id").toString();
+        
+        if (userid == null) {
+    resp.sendRedirect("login.jsp"); // Redirect user to login page if not logged in
+    return;
+}
+
 
         try (BufferedReader reader = req.getReader()) {
             while ((line = reader.readLine()) != null) {
