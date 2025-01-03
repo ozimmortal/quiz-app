@@ -26,7 +26,13 @@ public class GetAnswers extends HttpServlet {
 
         String id = req.getParameter("id");
         String qid = req.getParameter("qid");
-
+        
+         if (id == null || id.isEmpty() || qid == null || qid.isEmpty()) {
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("error", "Missing required parameters: id or qid");
+            resp.getWriter().write(errorResponse.toString());
+            return;
+        }
         try {
             JsonObject data = userDao.getAnswer(id, qid);
             System.out.println(data);
